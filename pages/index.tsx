@@ -1,7 +1,12 @@
-import type { NextPage } from "next";
+import type { NextPage } from 'next'
+import UserForm from '../components/UserForm'
 
 const Home: NextPage = () => {
-  return <h1>Forsiden</h1>;
-};
+  return (
+    <>
+      <UserForm handleSubmit={(formData) => console.log(formData)} />
+    </>
+  )
+}
 
-export default Home;
+export default Home
