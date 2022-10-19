@@ -11,12 +11,9 @@ const isValid = ({ name, email, password }: FormData) => {
   if (name && email && password) {
     if (/(.+)@(.+){2,}\.(.+){2,}/.test(email)) {
       return true
-    } else {
-      return false
     }
-  } else {
-    return false
   }
+  return false
 }
 
 type FormProps = {
@@ -31,19 +28,14 @@ export default function UserForm({ handleSubmit }: FormProps) {
   })
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [formErrors, setFormErrors] = useState('')
-  useEffect(() => {
-    if (!isValid(formData)) {
-      setFormErrors('Invalid name, email or password')
-    } else {
-      setFormErrors('')
-    }
-  }, [formData])
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (isValid(formData) && !formSubmitted) {
       setFormSubmitted(true)
       handleSubmit(formData)
+    } else {
+      setFormErrors('Invalid form data')
     }
   }
 
@@ -55,30 +47,33 @@ export default function UserForm({ handleSubmit }: FormProps) {
   }
   if (!formSubmitted) {
     return (
-      <form onSubmit={handleFormSubmit}>
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          id="name"
-          value={formData.name}
-          onChange={handleFormChange}
-        />
-        <label htmlFor="email">Email</label>
-        <input
-          type="text"
-          id="email"
-          value={formData.email}
-          onChange={handleFormChange}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          value={formData.password}
-          onChange={handleFormChange}
-        />
-        <button disabled={!isValid(formData)}>Submit</button>
-      </form>
+      <>
+        <form onSubmit={handleFormSubmit}>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            value={formData.name}
+            onChange={handleFormChange}
+          />
+          <label htmlFor="email">Email</label>
+          <input
+            type="text"
+            id="email"
+            value={formData.email}
+            onChange={handleFormChange}
+          />
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={formData.password}
+            onChange={handleFormChange}
+          />
+          <button>Submit</button>
+        </form>
+        {formErrors && <p>{formErrors}</p>}
+      </>
     )
   } else {
     return (
